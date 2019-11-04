@@ -1,6 +1,8 @@
-- docker run ubuntu:15.10 /bin/echo “docker display”
-- docker run -it ubuntu:15.10  /bin/bash
-- docker run –itd --name ubuntu-learn ubuntu:15.10 /bin/bash 
+```
+docker run ubuntu:15.10 /bin/echo "docker display"
+docker run -it ubuntu:15.10  /bin/bash
+docker run –itd --name ubuntu-learn ubuntu:15.10 /bin/bash 
+```
 
 > exit 或者 ctrl + d
 
@@ -46,18 +48,18 @@ docker rmi [image_name] – 删除镜像
 ```
 --根据运行的容器来创建镜像
 
-`docker commit –m “update config” –a = “eason” [container_id] eason/ubuntu:v2.1`
+`docker commit –m "update config" –a = "eason" [container_id] eason/ubuntu:v2.1`
 
 根据Dockerfile创建镜像
 ` docker build –t eason/centos:7 .`
 
 ```dockerfile
 FROM centos:7
-MAINTAINER “southwang”
-RUN /bin/echo “root:123”|chpasswd
+MAINTAINER "southwang"
+RUN /bin/echo "root:123"|chpasswd
 RUN useradd eason
-RUN /bin/echo “eason:123”|chpassword
-RUN /bin/echo –e “LANG=\"en_US.UTF-8\"" > /etc/default/local
+RUN /bin/echo "eason:123"|chpassword
+RUN /bin/echo –e "LANG=\"en_US.UTF-8\"" > /etc/default/local
 EXPOSE 22
 EXPOSE 88
 CMD / usr/sbin/sshd -D
