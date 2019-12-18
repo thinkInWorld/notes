@@ -56,7 +56,7 @@ class ApplicationConfig {
 }
 ```
 
-#定义仓库接口
+# 定义仓库接口
 
 有效的接口实现层次
 ```java
@@ -169,7 +169,7 @@ interface ProductRepository implements Repository<Product, Long> {
  ListenableFuture<User> findOneByLastname(String lastname)
 ```
 
-#自定义实现基类
+# 自定义实现基类
 ```java
 class MyRepositoryImpl<T, ID>
   extends SimpleJpaRepository<T, ID> {
@@ -269,16 +269,16 @@ public interface MappedTypeRepository<T extends AbstractMappedType>
 public interface ConcreteRepository
   extends MappedTypeRepository<ConcreteType> { … }
 ```
+
 # 修改
 ```java
 @Modifying
 @Query("update User u set u.firstname = ?1 where u.lastname = ?2")
 int setFixedFirstnameFor(String firstname, String lastname);
 ```
+
 ## 结果集映射
 ```java
-
-
 // 结果映射
 class Person {
   @Id UUID id;
