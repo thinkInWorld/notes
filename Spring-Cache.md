@@ -53,9 +53,58 @@ public Book findBook(String name)
 ```
 > https://docs.spring.io/spring/docs/4.1.x/spring-framework-reference/html/cache.html #Available caching SpEL evaluation context
 
-## 更新缓存
+## 缓存的更新
 通过获取执行方法的返回值来更新缓存从而能够让其他地方得到最新值
+- CachePut总是更新缓存
+- CacheEvict总是清除缓存
+
 ```java
 @CachePut(value="book", key="#isbn")
 public Book updateBook(ISBN isbn, BookDescriptor descriptor)
+
+@CacheEvict(value="books", allEntries=true)
+public void loadBooks(InputStream batch)
+
+//更细粒度的更新缓存
+@Caching(evict = { @CacheEvict("primary"), @CacheEvict(value="secondary", key="#p0") })
+public Book importBooks(String deposit, Date date)
 ```
+便捷配置
+`@CacheConfig("books")`提供了一种使用便利 - 不用每个方法都写<b>缓存的名称<b>
+
+```java
+@CacheConfig("books")
+public class BookRepositoryImpl implements BookRepository {
+    @Cacheable
+    public Book findBook(ISBN isbn) {...}
+}
+```
+
+配置
+```java
+@Configuration
+@EnableCaching
+public class AppConfig {
+}
+```
+
+## 自定义缓存注解
+通过AspectJ来提供基于代理的开箱即用功能
+
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
+@Cacheable(value="books", key="#isbn")
+public @interface SlowService {
+}
+
+//使用
+@SlowService
+public Book findBook(ISBN isbn, boolean checkWarehouse, boolean includeUsed)
+
+//等价于
+@Cacheable(value="books", key="#isbn")
+public Book findBook(ISBN isbn, boolean checkWarehouse, boolean includeUsed)
+```
+
+
